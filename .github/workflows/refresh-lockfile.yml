@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: "20"
       - run: npm install --package-lock-only --ignore-scripts --no-audit
+      - run: npm audit fix --package-lock-only --ignore-scripts --no-fund
       - name: Commit lockfile only if changed
         run: |
           if git diff --quiet -- package-lock.json; then exit 0; fi
