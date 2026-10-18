@@ -10,7 +10,7 @@ export function config() {
 
 export async function adminRequest(path: string, init: RequestInit = {}) {
   const { url, key } = config()
-  const token = cookies().get("treksor_access")?.value
+  const token = (await cookies()).get("treksor_access")?.value
   if (!token) return null
   const headers = new Headers(init.headers)
   headers.set("apikey", key)
