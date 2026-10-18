@@ -43,7 +43,7 @@ export default function CreateArticlePage() {
       formData.append("description", description)
       formData.append("category", category)
       if (date) {
-        formData.append("date", new Date(date).toISOString().split('T')[0])
+        formData.append("date", date)
       } else {
         throw new Error("Date is required")
       }
