@@ -1,7 +1,7 @@
 "use client"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Film, ImageIcon, RefreshCw, Trash2, UploadCloud } from "lucide-react"
-type Media = { name: string; type: string; size: number; createdAt: string }
+type Media = { name: string; type: string; size: number; createdAt: string; url: string | null }
 export default function MediaPage() {
   const [files,setFiles]=useState<Media[]>([])
   const [kind,setKind]=useState<"photos"|"videos">("photos")
@@ -38,7 +38,7 @@ export default function MediaPage() {
       </div>
       <input ref={input} type="file" className="hidden" accept={kind==="photos"?"image/jpeg,image/png,image/webp":"video/mp4,video/quicktime,video/webm"} onChange={e=>void upload(e.target.files?.[0])}/>
       {message&&<p role="status" className="mt-5 rounded-lg border border-white/10 bg-black/20 p-3 text-sm text-[#e5b45f]">{message}</p>}
-      {visible.length===0?<div className="mt-8 rounded-xl border border-dashed border-white/15 p-12 text-center"><UploadCloud className="mx-auto h-9 w-9 text-[#e5b45f]"/><p className="mt-4 text-sm text-zinc-300">No {kind} uploaded yet. Select Upload file to get started.</p></div>:<div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{visible.map(file=><div key={file.name} className="rounded-xl border border-white/10 bg-black/20 p-4"><div className="flex h-28 items-center justify-center rounded-lg bg-[#24282a]">{kind==="photos"?<ImageIcon className="h-10 w-10 text-[#e5b45f]"/>:<Film className="h-10 w-10 text-[#e5b45f]"/>}</div><p className="mt-3 truncate text-xs text-zinc-300">{file.name}</p><div className="mt-3 flex items-center justify-between"><span className="text-xs text-zinc-500">{(file.size/1024/1024).toFixed(1)} MB</span><button disabled={busy} onClick={()=>void remove(file.name)} aria-label="Delete file" className="text-zinc-400 hover:text-red-400"><Trash2 className="h-4 w-4"/></button></div></div>)}</div>}
+      {visible.length===0?<div className="mt-8 rounded-xl border border-dashed border-white/15 p-12 text-center"><UploadCloud className="mx-auto h-9 w-9 text-[#e5b45f]"/><p className="mt-4 text-sm text-zinc-300">No {kind} uploaded yet. Select Upload file to get started.</p></div>:<div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{visible.map(file=><div key={file.name} className="rounded-xl border border-white/10 bg-black/20 p-4"><div className="flex h-36 items-center justify-center overflow-hidden rounded-lg bg-[#24282a]">{file.url?(kind==="photos"?<img src={file.url} alt="Uploaded Treksor media" className="h-full w-full object-cover"/>:<video src={file.url} controls preload="metadata" className="h-full w-full"/>):(kind==="photos"?<ImageIcon className="h-10 w-10 text-[#e5b45f]"/>:<Film className="h-10 w-10 text-[#e5b45f]"/>)}</div><p className="mt-3 truncate text-xs text-zinc-300">{file.name}</p><div className="mt-3 flex items-center justify-between"><span className="text-xs text-zinc-500">{(file.size/1024/1024).toFixed(1)} MB</span><button disabled={busy} onClick={()=>void remove(file.name)} aria-label="Delete file" className="text-zinc-400 hover:text-red-400"><Trash2 className="h-4 w-4"/></button></div></div>)}</div>}
     </section>
   </main>
 }
