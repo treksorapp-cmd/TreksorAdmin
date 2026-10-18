@@ -75,5 +75,9 @@
     "tailwindcss": "^4.1.0",
     "typescript": "^5",
     "@tailwindcss/postcss": "^4.1.0"
+  },
+  "overrides": {
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
   }
 }
