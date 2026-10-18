@@ -3,8 +3,16 @@ import { NextRequest, NextResponse } from "next/server"
 export async function middleware(request: NextRequest) {
   if (!["GET", "HEAD", "OPTIONS"].includes(request.method)) {
     const origin = request.headers.get("origin")
-    const expected = request.nextUrl.origin
-    if (!origin || origin !== expected) {
+    // Railway terminates HTTPS at its proxy, so nextUrl.origin can be an internal address.
+    // Compare the browser Origin against the actual request Host instead.
+    const host = request.headers.get("host")
+    let validOrigin = false
+    try {
+      const parsed = origin ? new URL(origin) : null
+      validOrigin = !!parsed && !!host && parsed.host === host &&
+        (process.env.NODE_ENV === "production" ? parsed.protocol === "https:" : ["http:", "https:"].includes(parsed.protocol))
+    } catch { validOrigin = false }
+    if (!validOrigin) {
       return NextResponse.json({ error: "Invalid request origin" }, { status: 403 })
     }
   }
