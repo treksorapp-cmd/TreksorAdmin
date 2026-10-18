@@ -14,7 +14,8 @@ import { ArrowLeft, AlertTriangle, Lightbulb } from "lucide-react"
 export default function CreatePowerThoughtPage() {
   const [thought, setThought] = useState("")
   const [date, setDate] = useState('');
-  const [isLoading, setIsLoading] = useState(false)\n  const [status, setStatus] = useState<"draft" | "published">("draft")
+  const [isLoading, setIsLoading] = useState(false)
+  const [status, setStatus] = useState<"draft" | "published">("draft")
   const router = useRouter()
   const { toast } = useToast()
 
