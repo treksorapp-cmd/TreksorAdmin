@@ -13,7 +13,13 @@ export async function GET() {
   const response = await fetch(`${url}/storage/v1/object/list/${BUCKET}`, { method: "POST", headers: { ...storageHeaders(admin.token), "Content-Type": "application/json" }, body: JSON.stringify({ prefix: "", limit: 100, sortBy: { column: "created_at", order: "desc" } }), cache: "no-store" })
   if (!response.ok) return NextResponse.json({ error: "Unable to load media" }, { status: 502 })
   const files = await response.json() as { name: string; id: string; created_at: string; metadata?: { mimetype?: string; size?: number } }[]
-  return NextResponse.json({ files: files.filter(file => file.id).map(file => ({ name: file.name, createdAt: file.created_at, type: file.metadata?.mimetype ?? "", size: file.metadata?.size ?? 0 })) })
+  const previews = await Promise.all(files.filter(file => file.id).map(async file => {
+    const sign = await fetch(`${url}/storage/v1/object/sign/${BUCKET}/${encodeURIComponent(file.name)}`, { method:"POST", headers:{ ...storageHeaders(admin.token), "Content-Type":"application/json" }, body:JSON.stringify({ expiresIn: 900 }), cache:"no-store" })
+    const result = sign.ok ? await sign.json() as { signedURL?: string } : {}
+    const signed = result.signedURL
+    return { name:file.name, createdAt:file.created_at, type:file.metadata?.mimetype ?? "", size:file.metadata?.size ?? 0, url: signed ? (signed.startsWith("http") ? signed : `${url}/storage/v1${signed.startsWith("/") ? "" : "/"}${signed}`) : null }
+  }))
+  return NextResponse.json({ files: previews })
 }
 export async function POST(request: NextRequest) {
   const admin = await adminRequest("")
