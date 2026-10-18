@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { getEditorialSignals } from "@/lib/editorial-signals"
 import { adminRequest } from "@/lib/supabase-admin"
-import { ArrowRight, BarChart3, FileText, Lightbulb, Users, Mountain, Sparkles, Smartphone, Clock3, Globe2, ExternalLink } from "lucide-react"
+import { ArrowRight, BarChart3, FileText, Lightbulb, Users, Sparkles, Smartphone, Clock3, Globe2, ExternalLink } from "lucide-react"
 
 type Article = { id: string; title: string; publish_date: string; status: string }
 type Thought = { id: string; thought: string; publish_date: string; status: string }
@@ -44,7 +44,7 @@ export default async function DashboardPage() {
     { month: 6, day: 15, name: "Men’s Health Awareness (June)", angle: "Health checks, fitness and wellbeing" },
     { month: 9, day: 10, name: "World Suicide Prevention Day", angle: "Support, connection and asking for help" },
     { month: 10, day: 10, name: "World Mental Health Day", angle: "Emotional resilience and mental wellbeing" },
-    { month: 11, day: 1, name: "Movember", angle: "Men’s health and prevention" },
+    { month: 11, day: 1, name: "Noviembre · Salud masculina", angle: "Prevención y bienestar de los hombres" },
     { month: 11, day: 19, name: "International Men’s Day", angle: "Positive role models and healthy masculinity" },
   ].map(event => {
     const year = now.getUTCFullYear()
@@ -60,7 +60,6 @@ export default async function DashboardPage() {
           <h1 className="font-serif text-4xl tracking-tight text-white sm:text-6xl">Welcome back!</h1>
           <p className="mt-4 text-base text-zinc-300">Manage your content and inspire the Treksor community.</p>
         </div>
-        <Mountain aria-hidden="true" className="absolute -bottom-12 right-4 h-60 w-60 text-[#b78343]/10 sm:right-12 sm:h-72 sm:w-72" strokeWidth={0.65} />
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -106,7 +105,6 @@ export default async function DashboardPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">Treksor Mission</p>
         <h2 className="mt-3 font-serif text-3xl text-white sm:text-5xl">Inspire. Explore. Grow.</h2>
         <p className="mt-4 max-w-xl text-sm leading-7 text-zinc-300">Create and share content that motivates people to live a more intentional life.</p>
-        <Mountain aria-hidden="true" className="absolute -bottom-16 right-4 h-64 w-64 text-[#e7b45c]/10 sm:right-14" strokeWidth={0.5} />
       </section>
 
       <div className="grid gap-5 xl:grid-cols-2">
