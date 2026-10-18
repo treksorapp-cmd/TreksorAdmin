@@ -4,6 +4,7 @@ on:
     paths:
       - "**/*.ts"
       - "**/*.tsx"
+      - "**/*.mjs"
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/admin-validation.yml"
