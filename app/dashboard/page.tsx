@@ -62,6 +62,12 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-3">
+        <Link href="/dashboard/articles/create" className="group rounded-2xl border border-[#e0ad58]/30 bg-[linear-gradient(125deg,#352719,#1a1d1d)] p-6 transition hover:border-[#e0ad58]"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e0ad58]">Write with intention</p><h2 className="mt-3 font-serif text-2xl text-white">Create an article</h2><p className="mt-2 text-sm text-zinc-400">Turn one meaningful insight into something that helps someone today.</p><ArrowRight className="mt-5 h-5 w-5 text-[#e0ad58] transition group-hover:translate-x-1"/></Link>
+        <Link href="/dashboard/power-thoughts/create" className="group rounded-2xl border border-white/10 bg-[#141b1f] p-6 transition hover:border-[#e0ad58]/50"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e0ad58]">One powerful idea</p><h2 className="mt-3 font-serif text-2xl text-white">Create a Power Thought</h2><p className="mt-2 text-sm text-zinc-400">A few thoughtful words can change the direction of a day.</p><ArrowRight className="mt-5 h-5 w-5 text-[#e0ad58] transition group-hover:translate-x-1"/></Link>
+        <Link href="/dashboard/media" className="group rounded-2xl border border-white/10 bg-[#141b1f] p-6 transition hover:border-[#e0ad58]/50"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e0ad58]">Shape the atmosphere</p><h2 className="mt-3 font-serif text-2xl text-white">Explore your media</h2><p className="mt-2 text-sm text-zinc-400">Bring your visual stories, photography and footage into one studio.</p><ArrowRight className="mt-5 h-5 w-5 text-[#e0ad58] transition group-hover:translate-x-1"/></Link>
+      </section>
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[
           { label: "Downloads · iOS", icon: Smartphone, detail: "Connect App Store Connect" },
