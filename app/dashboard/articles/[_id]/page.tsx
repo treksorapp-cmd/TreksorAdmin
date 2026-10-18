@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { ArrowLeft, Edit, Trash2 } from "lucide-react"
 import Image from "next/image"
+import DOMPurify from "isomorphic-dompurify"
 
 interface Article {
   _id: string
@@ -152,7 +153,7 @@ export default function ArticleDetailPage() {
 
           <div>
             <h3 className="text-lg font-semibold mb-2">Content</h3>
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: article.body }} />
+            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.body) }} />
           </div>
 
           <div className="text-sm text-muted-foreground">
