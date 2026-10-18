@@ -38,6 +38,20 @@ function Panel({ title, href, icon, children }: { title: string; href: string; i
 
 export default async function DashboardPage() {
   const [{ articles, thoughts }, signals] = await Promise.all([loadContent(), getEditorialSignals()])
+  const now = new Date()
+  const calendar = [
+    { month: 2, day: 8, name: "International Women’s Day", angle: "Healthy relationships and appreciation" },
+    { month: 5, day: 15, name: "International Men’s Health Week", angle: "Health checks, fitness and wellbeing" },
+    { month: 9, day: 10, name: "World Suicide Prevention Day", angle: "Support, connection and asking for help" },
+    { month: 10, day: 10, name: "World Mental Health Day", angle: "Emotional resilience and mental wellbeing" },
+    { month: 11, day: 1, name: "Movember", angle: "Men’s health and prevention" },
+    { month: 11, day: 19, name: "International Men’s Day", angle: "Positive role models and healthy masculinity" },
+  ].map(event => {
+    const year = now.getUTCFullYear()
+    const candidate = Date.UTC(year, event.month - 1, event.day)
+    const when = new Date(candidate < Date.UTC(year, now.getUTCMonth(), now.getUTCDate()) ? Date.UTC(year + 1, event.month - 1, event.day) : candidate)
+    return { ...event, when }
+  }).sort((a, b) => a.when.getTime() - b.when.getTime()).slice(0, 3)
   return (
     <main className="mx-auto max-w-7xl space-y-6 pb-12">
       <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#11191c] px-6 py-12 sm:px-9 sm:py-16">\n        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(90deg,#10171b_5%,rgba(16,23,27,0.92)_40%,rgba(16,23,27,0.35)_100%),url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=75)] bg-cover bg-center opacity-80" />
@@ -75,6 +89,16 @@ export default async function DashboardPage() {
           </a>
         ))}</div> : <p className="rounded-xl border border-dashed border-white/15 px-5 py-8 text-sm text-zinc-400">Live headlines are temporarily unavailable. Try again later.</p>}
         <div className="mt-5 flex flex-wrap gap-2">{["Mental resilience", "Healthy relationships", "Physical wellbeing", "Life purpose", "Stress & balance", "Confidence"].map(topic => <span key={topic} className="rounded-full border border-[#ad8247]/30 bg-[#ad8247]/10 px-3 py-1.5 text-xs text-[#e6bc78]">{topic}</span>)}</div>
+      </section>
+
+      <section className="rounded-2xl border border-white/10 bg-[#141b1f] p-6 sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e5b45f]">Content calendar</p>
+        <h2 className="mt-2 font-serif text-3xl text-white">Upcoming moments</h2>
+        <p className="mt-2 text-sm text-zinc-400">Awareness dates to spark thoughtful Articles and Power Thoughts. Dates are editorial references, not trending-search data.</p>
+        <div className="mt-6 grid gap-3 md:grid-cols-3">{calendar.map(event => <div key={event.name} className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+          <p className="text-sm font-semibold text-[#e5b45f]">{new Intl.DateTimeFormat("en", { month: "short", day: "numeric", timeZone: "UTC" }).format(event.when)}</p>
+          <h3 className="mt-3 font-medium text-white">{event.name}</h3><p className="mt-2 text-xs leading-6 text-zinc-400">{event.angle}</p>
+        </div>)}</div>
       </section>
 
       <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[radial-gradient(ellipse_at_85%_50%,rgba(200,129,52,0.28),transparent_45%),linear-gradient(110deg,#121a1e,#33261e)] px-6 py-9 sm:px-10 sm:py-11">
