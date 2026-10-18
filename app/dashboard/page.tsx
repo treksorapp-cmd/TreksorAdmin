@@ -1,6 +1,7 @@
 import Link from "next/link"
+import { getEditorialSignals } from "@/lib/editorial-signals"
 import { adminRequest } from "@/lib/supabase-admin"
-import { ArrowRight, BarChart3, FileText, Lightbulb, Users, Eye, TrendingUp, Mountain, Sparkles } from "lucide-react"
+import { ArrowRight, BarChart3, FileText, Lightbulb, Users, Mountain, Sparkles, Smartphone, Clock3, Globe2, ExternalLink } from "lucide-react"
 
 type Article = { id: string; title: string; publish_date: string; status: string }
 type Thought = { id: string; thought: string; publish_date: string; status: string }
@@ -36,7 +37,7 @@ function Panel({ title, href, icon, children }: { title: string; href: string; i
 }
 
 export default async function DashboardPage() {
-  const { articles, thoughts } = await loadContent()
+  const [{ articles, thoughts }, signals] = await Promise.all([loadContent(), getEditorialSignals()])
   return (
     <main className="mx-auto max-w-7xl space-y-6 pb-12">
       <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[radial-gradient(ellipse_at_85%_25%,rgba(174,96,33,0.27),transparent_42%),linear-gradient(115deg,#10171a_40%,#30241d_100%)] px-6 py-9 sm:px-9 sm:py-12">
@@ -48,18 +49,33 @@ export default async function DashboardPage() {
         <Mountain aria-hidden="true" className="absolute -bottom-12 right-4 h-60 w-60 text-[#b78343]/10 sm:right-12 sm:h-72 sm:w-72" strokeWidth={0.65} />
       </section>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[
-          { label: "Total Users", icon: Users },
-          { label: "Views", icon: Eye },
-          { label: "Growth", icon: TrendingUp },
+          { label: "Downloads · iOS", icon: Smartphone, detail: "Connect App Store Connect" },
+          { label: "Downloads · Android", icon: Smartphone, detail: "Connect Google Play Console" },
+          { label: "Active Users", icon: Users, detail: "App analytics not connected" },
+          { label: "Avg. Session Time", icon: Clock3, detail: "App analytics not connected" },
         ].map(metric => (
-          <section key={metric.label} className="flex items-center gap-5 rounded-2xl border border-white/10 bg-[#141b1f] p-6">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#3a2d1c] text-[#e5b45f]"><metric.icon className="h-6 w-6" /></span>
-            <div><p className="text-sm text-zinc-400">{metric.label}</p><p className="mt-1 text-3xl font-semibold text-white">—</p><p className="mt-1 text-xs text-zinc-500">Analytics coming soon</p></div>
+          <section key={metric.label} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#141b1f] p-5">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#3a2d1c] text-[#e5b45f]"><metric.icon className="h-5 w-5" /></span>
+            <div className="min-w-0"><p className="text-sm text-zinc-300">{metric.label}</p><p className="mt-1 text-2xl font-semibold text-white">—</p><p className="mt-1 text-xs text-zinc-500">{metric.detail}</p></div>
           </section>
         ))}
       </div>
+      <Link href="/dashboard/audience" className="inline-flex items-center gap-2 text-sm text-[#e5b45f] hover:text-[#ffcf7a]">Audience & analytics setup <ArrowRight className="h-4 w-4" /></Link>
+
+      <section className="rounded-2xl border border-white/10 bg-[#141b1f] p-6 sm:p-8">
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
+          <div><p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e5b45f]">Editorial radar</p><h2 className="mt-2 font-serif text-3xl text-white">Ideas worth exploring</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">Recent public headlines related to men's wellbeing, relationships, fitness and purpose. Use these as inspiration, not as evidence of what Treksor users are searching for.</p></div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-2 text-xs text-zinc-400"><Globe2 className="h-4 w-4 text-[#e5b45f]" /> Public news · refreshed every 30 min</span>
+        </div>
+        {signals.length ? <div className="grid gap-3 md:grid-cols-2">{signals.map(signal => (
+          <a key={signal.link} href={signal.link} target="_blank" rel="noopener noreferrer" className="group flex items-start justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-[#d5a652]/50 hover:bg-white/[0.06]">
+            <div><p className="line-clamp-2 text-sm font-medium leading-6 text-zinc-100 group-hover:text-[#eac57f]">{signal.title}</p><p className="mt-2 text-xs text-zinc-500">{signal.source}{signal.published ? " · " + dateLabel(signal.published) : ""}</p></div><ExternalLink className="mt-1 h-4 w-4 shrink-0 text-[#d5a652]" />
+          </a>
+        ))}</div> : <p className="rounded-xl border border-dashed border-white/15 px-5 py-8 text-sm text-zinc-400">Live headlines are temporarily unavailable. Try again later.</p>}
+        <div className="mt-5 flex flex-wrap gap-2">{["Mental resilience", "Healthy relationships", "Physical wellbeing", "Life purpose", "Stress & balance", "Confidence"].map(topic => <span key={topic} className="rounded-full border border-[#ad8247]/30 bg-[#ad8247]/10 px-3 py-1.5 text-xs text-[#e6bc78]">{topic}</span>)}</div>
+      </section>
 
       <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[radial-gradient(ellipse_at_85%_50%,rgba(200,129,52,0.28),transparent_45%),linear-gradient(110deg,#121a1e,#33261e)] px-6 py-9 sm:px-10 sm:py-11">
         <Sparkles className="mb-4 h-5 w-5 text-[#e3b15d]" />
