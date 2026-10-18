@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Zap } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Zap, Users, Plug } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -13,6 +13,8 @@ const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Articles", url: "/dashboard/articles", icon: FileText },
   { title: "Power Thoughts", url: "/dashboard/power-thoughts", icon: Lightbulb },
+  { title: "Audience", url: "/dashboard/audience", icon: Users },
+  { title: "Integrations", url: "/dashboard/integrations", icon: Plug },
 ]
 
 export function AppSidebar() {
