@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 
 export async function middleware(request: NextRequest) {
+  if (!["GET", "HEAD", "OPTIONS"].includes(request.method)) {
+    const origin = request.headers.get("origin")
+    const expected = request.nextUrl.origin
+    if (!origin || origin !== expected) {
+      return NextResponse.json({ error: "Invalid request origin" }, { status: 403 })
+    }
+  }
   const access = request.cookies.get("treksor_access")?.value
   const refresh = request.cookies.get("treksor_refresh")?.value
   if (!refresh) return NextResponse.next()
@@ -40,4 +47,4 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-export const config = { matcher: ["/dashboard/:path*", "/api/articles/:path*", "/api/power-thoughts/:path*", "/api/auth/session"] }
+export const config = { matcher: ["/dashboard/:path*", "/api/articles/:path*", "/api/power-thoughts/:path*", "/api/auth/session", "/api/auth/login", "/api/auth/logout"] }
