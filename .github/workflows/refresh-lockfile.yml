@@ -17,8 +17,8 @@ jobs:
           persist-credentials: true
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-      - run: npm install --package-lock-only --ignore-scripts --no-audit
+          node-version: "22"
+      - run: rm -f package-lock.json && npm install --package-lock-only --ignore-scripts --no-audit
       - run: npm audit fix --package-lock-only --ignore-scripts --no-fund || echo "Remaining advisories require manual upgrades; retaining audit gate in validation"
       - name: Commit lockfile only if changed
         run: |
