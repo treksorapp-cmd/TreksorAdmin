@@ -3,7 +3,15 @@ import { config } from "@/lib/supabase-admin"
 
 export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin")
-  if (!origin || origin !== request.nextUrl.origin)
+  // The public HTTPS origin differs from Next.js internal origin behind Railway proxy.
+  const host = request.headers.get("host")
+  let validOrigin = false
+  try {
+    const parsed = origin ? new URL(origin) : null
+    validOrigin = !!parsed && !!host && parsed.host === host &&
+      (process.env.NODE_ENV === "production" ? parsed.protocol === "https:" : ["http:", "https:"].includes(parsed.protocol))
+  } catch { validOrigin = false }
+  if (!validOrigin)
     return NextResponse.json({ error: "Invalid origin" }, { status: 403 })
   try {
     const { accessToken, password } = await request.json()
