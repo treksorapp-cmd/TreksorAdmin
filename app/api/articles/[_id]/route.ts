@@ -1,70 +1,29 @@
-import { type NextRequest, NextResponse } from "next/server"
-
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api/v1' : 'https://app.treksor.com/api/v1';
-
-export async function GET(request: NextRequest, { params }: { params: { _id: string } }) {
-  try {
-    const token = request.headers.get("authorization")?.replace("Bearer ", "")
-
-    const response = await fetch(`${baseUrl}/article/${params._id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    const data = await response.json()
-
-    if (response.ok) {
-      return NextResponse.json(data)
-    } else {
-      return NextResponse.json({ error: "Failed to fetch article" }, { status: response.status })
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
-  }
+import {NextRequest,NextResponse} from "next/server"
+import {adminRequest} from "@/lib/supabase-admin"
+import {articleForUi,categories,uploadImage} from "@/lib/treksor-articles"
+const uuid=(s:string)=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s)
+export async function GET(_req:NextRequest,{params}:{params:{_id:string}}){
+ const a=await adminRequest("");if(!a)return NextResponse.json({error:"Unauthorized"},{status:401})
+ if(!uuid(params._id))return NextResponse.json({error:"Invalid ID"},{status:400})
+ const r=await a.request(`articles?id=eq.${params._id}&select=*`)
+ if(!r.ok)return NextResponse.json({error:"Unable to load"},{status:502})
+ const rows=await r.json();return rows.length?NextResponse.json({article:articleForUi(rows[0],a.url)}):NextResponse.json({error:"Not found"},{status:404})
 }
-
-export async function PATCH(request: NextRequest, { params }: { params: { _id: string } }) {
-  try {
-    const formData = await request.formData()
-    const token = request.headers.get("authorization")?.replace("Bearer ", "")
-
-    const response = await fetch(`${baseUrl}/article/${params._id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    })
-
-    const data = await response.json()
-
-    if (response.ok) {
-      return NextResponse.json(data)
-    } else {
-      return NextResponse.json({ error: "Failed to update article" }, { status: response.status })
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
-  }
+export async function PATCH(req:NextRequest,{params}:{params:{_id:string}}){
+ const a=await adminRequest("");if(!a)return NextResponse.json({error:"Unauthorized"},{status:401})
+ if(!uuid(params._id))return NextResponse.json({error:"Invalid ID"},{status:400})
+ let f:FormData;try{f=await req.formData()}catch{return NextResponse.json({error:"Invalid form"},{status:400})}
+ const title=f.get("title"),description=f.get("description"),body=f.get("body"),category=f.get("category")
+ if(typeof title!=="string"||!title.trim()||title.length>200||typeof description!=="string"||description.length>2000||typeof body!=="string"||body.length>200000||typeof category!=="string"||!categories.includes(category as any))return NextResponse.json({error:"Invalid fields"},{status:400})
+ const image=await uploadImage(a,f.get("image"));if(image.error)return NextResponse.json({error:image.error},{status:400})
+ const fields:any={title:title.trim(),description,body,category,updated_at:new Date().toISOString()};if(image.path)fields.image_path=image.path
+ const r=await a.request(`articles?id=eq.${params._id}`,{method:"PATCH",headers:{"Content-Type":"application/json",Prefer:"return=representation"},body:JSON.stringify(fields)})
+ if(!r.ok)return NextResponse.json({error:"Unable to update"},{status:400})
+ const rows=await r.json();return rows.length?NextResponse.json({article:articleForUi(rows[0],a.url)}):NextResponse.json({error:"Not found"},{status:404})
 }
-
-export async function DELETE(request: NextRequest, { params }: { params: { _id: any } }) {
-  try {
-    const token = request.headers.get("authorization")?.replace("Bearer ", "")
-    const response = await fetch(`${baseUrl}/article/${params._id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    if (response.ok) {
-      return NextResponse.json({ success: true })
-    } else {
-      return NextResponse.json({ error: "Failed to delete article" }, { status: response.status })
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
-  }
+export async function DELETE(_req:NextRequest,{params}:{params:{_id:string}}){
+ const a=await adminRequest("");if(!a)return NextResponse.json({error:"Unauthorized"},{status:401})
+ if(!uuid(params._id))return NextResponse.json({error:"Invalid ID"},{status:400})
+ const r=await a.request(`articles?id=eq.${params._id}`,{method:"DELETE"})
+ return r.ok?NextResponse.json({success:true}):NextResponse.json({error:"Unable to delete"},{status:502})
 }
