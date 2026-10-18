@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { getEditorialSignals } from "@/lib/editorial-signals"
 import { adminRequest } from "@/lib/supabase-admin"
-import { ArrowRight, BarChart3, FileText, Lightbulb, Users, Sparkles, Smartphone, Clock3, Globe2, ExternalLink } from "lucide-react"
+import { ArrowRight, FileText, Lightbulb, Sparkles, Globe2, ExternalLink, PenLine, CalendarCheck2 } from "lucide-react"
 
 type Article = { id: string; title: string; publish_date: string; status: string }
 type Thought = { id: string; thought: string; publish_date: string; status: string }
@@ -68,20 +68,19 @@ export default async function DashboardPage() {
         <Link href="/dashboard/media" className="group rounded-2xl border border-white/10 bg-[#141b1f] p-6 transition hover:border-[#e0ad58]/50"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e0ad58]">Shape the atmosphere</p><h2 className="mt-3 font-serif text-2xl text-white">Explore your media</h2><p className="mt-2 text-sm text-zinc-400">Bring your visual stories, photography and footage into one studio.</p><ArrowRight className="mt-5 h-5 w-5 text-[#e0ad58] transition group-hover:translate-x-1"/></Link>
       </section>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {[
-          { label: "Downloads · iOS", icon: Smartphone, detail: "Connect App Store Connect" },
-          { label: "Downloads · Android", icon: Smartphone, detail: "Connect Google Play Console" },
-          { label: "Active Users", icon: Users, detail: "App analytics not connected" },
-          { label: "Avg. Session Time", icon: Clock3, detail: "App analytics not connected" },
-        ].map(metric => (
-          <section key={metric.label} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#141b1f] p-5">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#3a2d1c] text-[#e5b45f]"><metric.icon className="h-5 w-5" /></span>
-            <div className="min-w-0"><p className="text-sm text-zinc-300">{metric.label}</p><p className="mt-1 text-2xl font-semibold text-white">—</p><p className="mt-1 text-xs text-zinc-500">{metric.detail}</p></div>
-          </section>
-        ))}
-      </div>
-      <Link href="/dashboard/audience" className="inline-flex items-center gap-2 text-sm text-[#e5b45f] hover:text-[#ffcf7a]">Audience & analytics setup <ArrowRight className="h-4 w-4" /></Link>
+      <section className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
+        <div className="overflow-hidden rounded-2xl border border-[#e0ad58]/20 bg-[linear-gradient(125deg,rgba(39,29,19,.96),rgba(17,24,26,.96)),url(https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=75)] bg-cover bg-center p-7 sm:p-9">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#e5b45f]"><Sparkles className="h-4 w-4"/> Editorial spark</div>
+          <h2 className="mt-5 max-w-lg font-serif text-3xl leading-tight text-white sm:text-4xl">What does a stronger tomorrow look like?</h2>
+          <p className="mt-4 max-w-md text-sm leading-7 text-zinc-300">A starting point for a thoughtful piece: explore one practical habit that helps men feel more grounded, connected or purposeful.</p>
+          <Link href="/dashboard/articles/create" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#e5b45f] px-5 py-3 text-sm font-bold text-[#15120d] hover:bg-[#f5c87a]"><PenLine className="h-4 w-4"/> Start writing <ArrowRight className="h-4 w-4"/></Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <div className="flex items-center gap-5 rounded-2xl border border-white/10 bg-[#141b1f] p-6"><span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#3a2d1c] text-[#e5b45f]"><FileText className="h-6 w-6"/></span><div><p className="text-sm text-zinc-400">Recent articles</p><p className="mt-1 text-3xl font-semibold text-white">{articles.length}</p><p className="text-xs text-zinc-500">Showing your latest 3</p></div></div>
+          <div className="flex items-center gap-5 rounded-2xl border border-white/10 bg-[#141b1f] p-6"><span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#3a2d1c] text-[#e5b45f]"><Lightbulb className="h-6 w-6"/></span><div><p className="text-sm text-zinc-400">Recent Power Thoughts</p><p className="mt-1 text-3xl font-semibold text-white">{thoughts.length}</p><p className="text-xs text-zinc-500">Showing your latest 3</p></div></div>
+          <Link href="/dashboard/audience" className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#141b1f] p-5 text-sm text-zinc-300 transition hover:border-[#e5b45f]/50"><CalendarCheck2 className="h-6 w-6 text-[#e5b45f]"/><span className="flex-1"><strong className="block text-white">Audience insights</strong><span className="text-xs text-zinc-400">Connect mobile analytics to see real usage.</span></span><ArrowRight className="h-4 w-4 text-[#e5b45f]"/></Link>
+        </div>
+      </section>
 
       <section className="rounded-2xl border border-white/10 bg-[#141b1f] p-6 sm:p-8">
         <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
@@ -104,13 +103,6 @@ export default async function DashboardPage() {
           <p className="text-sm font-semibold text-[#e5b45f]">{new Intl.DateTimeFormat("en", { month: "short", day: "numeric", timeZone: "UTC" }).format(event.when)}</p>
           <h3 className="mt-3 font-medium text-white">{event.name}</h3><p className="mt-2 text-xs leading-6 text-zinc-400">{event.angle}</p>
         </div>)}</div>
-      </section>
-
-      <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[radial-gradient(ellipse_at_85%_50%,rgba(200,129,52,0.28),transparent_45%),linear-gradient(110deg,#121a1e,#33261e)] px-6 py-9 sm:px-10 sm:py-11">
-        <Sparkles className="mb-4 h-5 w-5 text-[#e3b15d]" />
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">Treksor Mission</p>
-        <h2 className="mt-3 font-serif text-3xl text-white sm:text-5xl">Inspire. Explore. Grow.</h2>
-        <p className="mt-4 max-w-xl text-sm leading-7 text-zinc-300">Create and share content that motivates people to live a more intentional life.</p>
       </section>
 
       <div className="grid gap-5 xl:grid-cols-2">
@@ -136,7 +128,7 @@ export default async function DashboardPage() {
           )}
         </Panel>
       </div>
-      <p className="flex items-center justify-center gap-2 text-xs text-zinc-600"><BarChart3 className="h-3.5 w-3.5" /> Metrics will appear when analytics are connected.</p>
+
     </main>
   )
 }
