@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Zap } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -34,10 +34,10 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar className="border-r border-white/10 bg-[#101619] text-zinc-100">
+    <Sidebar className="border-r border-white/10 bg-[#080808] text-zinc-100">
       <SidebarHeader className="items-center px-4 pb-10 pt-9">
         <Link href="/dashboard" className="flex flex-col items-center gap-2" aria-label="Treksor Dashboard">
-          <img src="/treksor-original-logo.svg" alt="Original Treksor gold emblem" width="112" height="112" className="h-28 w-28 object-contain" />
+          <span className="flex h-20 w-20 items-center justify-center rounded-full border border-[#b88a47]/50 bg-black"><Zap className="h-11 w-11 fill-[#e3b45f] text-[#e3b45f]" aria-hidden="true" /></span>
           <span className="font-serif text-2xl tracking-[0.08em] text-[#e3b45f]">TREKSOR</span>
           <span className="text-[9px] uppercase tracking-[0.25em] text-zinc-500">Admin studio</span>
         </Link>
