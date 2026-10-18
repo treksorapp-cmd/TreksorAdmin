@@ -21,7 +21,7 @@ export default function CreateArticlePage() {
   const [body, setBody] = useState("")
   const [image, setImage] = useState<File | null>(null)
   const [date, setDate] = useState<string>();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)\n  const [status, setStatus] = useState<"draft" | "published">("draft")
   const router = useRouter()
   const { toast } = useToast()
 
@@ -47,7 +47,7 @@ export default function CreateArticlePage() {
       } else {
         throw new Error("Date is required")
       }
-      formData.append("body", body)
+      formData.append("body", body)\n      formData.append("status", status)
       if (image) {
         formData.append("image", image)
       }
@@ -64,7 +64,7 @@ export default function CreateArticlePage() {
       if (response.ok) {
         toast({
           title: "Success",
-          description: "Article created successfully",
+          description: "Article saved successfully",
         })
         router.push("/dashboard/articles")
       } else {
