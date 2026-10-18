@@ -44,7 +44,7 @@ export default async function DashboardPage() {
     { month: 6, day: 15, name: "Men’s Health Awareness (June)", angle: "Health checks, fitness and wellbeing" },
     { month: 9, day: 10, name: "World Suicide Prevention Day", angle: "Support, connection and asking for help" },
     { month: 10, day: 10, name: "World Mental Health Day", angle: "Emotional resilience and mental wellbeing" },
-    { month: 11, day: 1, name: "Noviembre · Salud masculina", angle: "Prevención y bienestar de los hombres" },
+    { month: 11, day: 1, name: "Movember · Men’s Health Month", angle: "Prevention, mental health and wellbeing" },
     { month: 11, day: 19, name: "International Men’s Day", angle: "Positive role models and healthy masculinity" },
   ].map(event => {
     const year = now.getUTCFullYear()
