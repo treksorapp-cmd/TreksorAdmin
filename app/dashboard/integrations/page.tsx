@@ -1,21 +1,21 @@
-import { Instagram, Youtube, Share2, Globe2, LockKeyhole } from "lucide-react"
-
-const services = [
-  { name: "Instagram", detail: "Optional content publishing and audience insights", icon: Instagram },
-  { name: "TikTok", detail: "Optional short-video publishing and audience insights", icon: Share2 },
-  { name: "YouTube", detail: "Optional videos and channel analytics", icon: Youtube },
+import { Instagram, Youtube, Share2, Globe2, LockKeyhole, ExternalLink, TrendingUp, Search, Palette, BarChart3, Sparkles } from "lucide-react"
+const networks = [
+  { name:"Instagram", description:"Business or Creator account via Meta. Publishing and insights require Meta app approval and OAuth credentials.", icon:Instagram, href:"https://developers.facebook.com/docs/instagram-platform/" },
+  { name:"TikTok", description:"TikTok Login Kit and Content Posting API require a registered developer app and approval.", icon:Share2, href:"https://developers.tiktok.com/" },
+  { name:"YouTube", description:"Channel authorization requires Google OAuth consent, a client ID and a client secret.", icon:Youtube, href:"https://console.cloud.google.com/apis/credentials" },
 ]
-
+const tools = [
+  { name:"Google Trends", description:"Discover rising questions and seasonal interest for future articles.", icon:TrendingUp, href:"https://trends.google.com/trends/" },
+  { name:"Google Search Console", description:"Understand which searches lead people to your future public website.", icon:Search, href:"https://search.google.com/search-console/" },
+  { name:"Canva", description:"Prepare polished thumbnails, article covers and social graphics.", icon:Palette, href:"https://www.canva.com/" },
+  { name:"Google Analytics", description:"Measure website visits and content engagement after you install its tracking tag.", icon:BarChart3, href:"https://analytics.google.com/" },
+  { name:"Exploding Topics", description:"Research emerging interests before they become mainstream.", icon:Sparkles, href:"https://explodingtopics.com/" },
+]
 export default function IntegrationsPage() {
-  return <main className="mx-auto max-w-6xl space-y-7 pb-12">
-    <header className="rounded-2xl border border-white/10 bg-[linear-gradient(120deg,#141b1f,#33241c)] p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2b15c]">Connected ecosystem</p>
-      <h1 className="mt-3 font-serif text-4xl text-white">Integrations</h1>
-      <p className="mt-3 max-w-xl text-sm leading-7 text-zinc-300">Treksor is the home for your content. Social networks are optional distribution channels, not a requirement.</p>
-    </header>
-    <div className="grid gap-4 md:grid-cols-3">{services.map(service => <section key={service.name} className="rounded-2xl border border-white/10 bg-[#141b1f] p-6">
-      <service.icon className="h-8 w-8 text-[#e2b15c]" /><h2 className="mt-5 text-xl font-semibold text-white">{service.name}</h2><p className="mt-3 min-h-12 text-sm leading-6 text-zinc-400">{service.detail}</p><span className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-xs text-zinc-400"><LockKeyhole className="h-3.5 w-3.5" /> Not connected</span>
-    </section>)}</div>
-    <div className="flex items-start gap-4 rounded-2xl border border-[#e2b15c]/20 bg-[#1b1b19] p-6"><Globe2 className="h-6 w-6 shrink-0 text-[#e2b15c]" /><div><h2 className="font-semibold text-white">Treksor on every screen</h2><p className="mt-2 text-sm leading-7 text-zinc-400">The admin website can be used on desktop and tablet. A public member experience across iPhone, Android and the web is a separate product development step, not yet connected or launched.</p></div></div>
+  return <main className="mx-auto max-w-6xl space-y-8 pb-12">
+    <header className="rounded-2xl border border-white/10 bg-[linear-gradient(115deg,#151a1b,#39281b)] p-8"><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2b15c]">Treksor ecosystem</p><h1 className="mt-3 font-serif text-4xl text-white">Integrations & creative tools</h1><p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-300">Keep Treksor at the center. Connect social accounts only when you are ready to distribute content.</p></header>
+    <section><h2 className="font-serif text-2xl text-white">Social accounts</h2><p className="mt-2 text-sm text-zinc-400">Secure account linking is not enabled yet. Each platform requires its own approved developer credentials. The setup links below open official provider pages; they do not connect your account automatically.</p><div className="mt-5 grid gap-4 md:grid-cols-3">{networks.map(network=><div key={network.name} className="rounded-2xl border border-white/10 bg-[#141b1f] p-6"><network.icon className="h-8 w-8 text-[#e2b15c]"/><h3 className="mt-5 text-xl font-semibold text-white">{network.name}</h3><p className="mt-3 min-h-24 text-sm leading-6 text-zinc-400">{network.description}</p><p className="mt-4 inline-flex items-center gap-2 text-xs text-zinc-400"><LockKeyhole className="h-4 w-4"/> Not connected</p><a href={network.href} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 rounded-lg border border-[#e2b15c]/50 px-4 py-3 text-sm font-semibold text-[#e2b15c] hover:bg-[#e2b15c]/10">Configure provider <ExternalLink className="h-4 w-4"/></a></div>)}</div></section>
+    <section><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2b15c]">Curated toolkit</p><h2 className="mt-2 font-serif text-3xl text-white">Five tools to make better work</h2><p className="mt-2 text-sm text-zinc-400">Practical resources used by creators, marketers and editorial teams. These open in a new tab; they are not connected data sources.</p></div><div className="mt-5 grid gap-4 sm:grid-cols-2">{tools.map(tool=><a key={tool.name} href={tool.href} target="_blank" rel="noopener noreferrer" className="group flex gap-4 rounded-2xl border border-white/10 bg-[#141b1f] p-5 transition hover:border-[#e2b15c]/50"><span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#3a2b1c]"><tool.icon className="h-6 w-6 text-[#e2b15c]"/></span><span className="flex-1"><span className="flex items-center gap-2 font-semibold text-white">{tool.name}<ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#e2b15c]"/></span><span className="mt-2 block text-sm leading-6 text-zinc-400">{tool.description}</span></span></a>)}</div></section>
+    <div className="flex gap-4 rounded-2xl border border-[#e2b15c]/20 bg-[#1b1b19] p-6"><Globe2 className="h-6 w-6 shrink-0 text-[#e2b15c]"/><div><h2 className="font-semibold text-white">Treksor on every screen</h2><p className="mt-2 text-sm leading-7 text-zinc-400">This private studio works on desktop and tablet. A public web experience and Android release are separate development steps.</p></div></div>
   </main>
 }
