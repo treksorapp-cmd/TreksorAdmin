@@ -14,9 +14,9 @@ export async function POST(request:NextRequest) {
  if(!admin) return NextResponse.json({error:"Unauthorized"},{status:401})
  let body:any
  try {body=await request.json()} catch {return NextResponse.json({error:"Invalid JSON"},{status:400})}
- if(typeof body.thought!=="string"||body.thought.trim().length<1||body.thought.trim().length>250||!validDate(body.date))
+ if(typeof body.thought!=="string"||body.thought.trim().length<1||body.thought.trim().length>250||!validDate(body.date)||!["draft","published"].includes(body.status))
   return NextResponse.json({error:"Invalid thought or date"},{status:400})
- const result=await admin.request("power_thoughts",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=representation"},body:JSON.stringify({thought:body.thought.trim(),publish_date:body.date,status:"published"})})
+ const result=await admin.request("power_thoughts",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=representation"},body:JSON.stringify({thought:body.thought.trim(),publish_date:body.date,status:body.status})})
  if(!result.ok) return NextResponse.json({error:"Unable to save thought"},{status:result.status===409?409:400})
  return NextResponse.json({data:await result.json()},{status:201})
 }
