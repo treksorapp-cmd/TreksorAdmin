@@ -25,7 +25,7 @@ export default function CreateArticlePage() {
   const router = useRouter()
   const { toast } = useToast()
 
-  const categories = ["Body", "Mental", "Spiritual"]
+  const categories = ["Body", "Mind", "Balance", "Purpose"]
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,11 +52,11 @@ export default function CreateArticlePage() {
         formData.append("image", image)
       }
 
-      const token = localStorage.getItem("token")
+      
       const response = await fetch("/api/articles", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
         body: formData,
       })
