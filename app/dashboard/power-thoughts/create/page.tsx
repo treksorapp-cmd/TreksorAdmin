@@ -23,14 +23,12 @@ export default function CreatePowerThoughtPage() {
     setIsLoading(true)
 
     try {
-      const token = localStorage.getItem("token")
       const response = await fetch("/api/power-thoughts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ thought, date: new Date(date).toISOString().split('T')[0] }),
+        body: JSON.stringify({ thought, date: date }),
       })
 
       if (response.ok) {
