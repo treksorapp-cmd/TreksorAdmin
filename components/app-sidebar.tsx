@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Zap, Users, Plug } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
