@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
+  { title: "Media", url: "/dashboard/media", icon: Images },
   { title: "Articles", url: "/dashboard/articles", icon: FileText },
   { title: "Power Thoughts", url: "/dashboard/power-thoughts", icon: Lightbulb },
   { title: "Audience", url: "/dashboard/audience", icon: Users },
@@ -36,7 +37,7 @@ export function AppSidebar() {
     <Sidebar className="border-r border-white/10 bg-[#101619] text-zinc-100">
       <SidebarHeader className="items-center px-4 pb-10 pt-9">
         <Link href="/dashboard" className="flex flex-col items-center gap-2" aria-label="Treksor Dashboard">
-          <img src="/treksor-original-logo.svg" alt="Original Treksor gold emblem" width="112" height="112" className="h-28 w-28 rounded-full object-cover" />
+          <img src="/treksor-original-logo.svg" alt="Original Treksor gold emblem" width="112" height="112" className="h-28 w-28 object-contain" />
           <span className="font-serif text-2xl tracking-[0.08em] text-[#e3b45f]">TREKSOR</span>
           <span className="text-[9px] uppercase tracking-[0.25em] text-zinc-500">Admin studio</span>
         </Link>
