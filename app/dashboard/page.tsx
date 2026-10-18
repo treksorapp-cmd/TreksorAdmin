@@ -40,8 +40,8 @@ export default async function DashboardPage() {
   const [{ articles, thoughts }, signals] = await Promise.all([loadContent(), getEditorialSignals()])
   const now = new Date()
   const calendar = [
-    { month: 2, day: 8, name: "International Women’s Day", angle: "Healthy relationships and appreciation" },
-    { month: 5, day: 15, name: "International Men’s Health Week", angle: "Health checks, fitness and wellbeing" },
+    { month: 3, day: 8, name: "International Women’s Day", angle: "Healthy relationships and appreciation" },
+    { month: 6, day: 15, name: "Men’s Health Awareness (June)", angle: "Health checks, fitness and wellbeing" },
     { month: 9, day: 10, name: "World Suicide Prevention Day", angle: "Support, connection and asking for help" },
     { month: 10, day: 10, name: "World Mental Health Day", angle: "Emotional resilience and mental wellbeing" },
     { month: 11, day: 1, name: "Movember", angle: "Men’s health and prevention" },
