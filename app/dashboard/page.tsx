@@ -20,7 +20,7 @@ async function loadContent() {
 }
 
 function dateLabel(value: string) {
-  const date = new Date(value.slice(0, 10) + "T12:00:00Z")
+  const date = /^\\d{4}-\\d{2}-\\d{2}/.test(value) ? new Date(value.slice(0, 10) + "T12:00:00Z") : new Date(value)
   return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(date)
 }
 
