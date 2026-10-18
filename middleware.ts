@@ -47,4 +47,4 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-export const config = { matcher: ["/dashboard/:path*", "/api/articles/:path*", "/api/power-thoughts/:path*", "/api/auth/session", "/api/auth/login", "/api/auth/logout"] }
+export const config = { matcher: ["/dashboard/:path*", "/api/articles/:path*", "/api/power-thoughts/:path*", "/api/auth/session", "/api/auth/login", "/api/auth/logout", "/api/auth/set-password"] }
