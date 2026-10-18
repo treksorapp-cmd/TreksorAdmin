@@ -26,3 +26,4 @@ jobs:
           SUPABASE_URL: https://example.supabase.co
           SUPABASE_PUBLISHABLE_KEY: ci-placeholder-not-a-real-key
       - run: npm audit --omit=dev --audit-level=high
+
