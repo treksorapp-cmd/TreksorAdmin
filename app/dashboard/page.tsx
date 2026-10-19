@@ -54,7 +54,8 @@ export default async function DashboardPage() {
   }).sort((a, b) => a.when.getTime() - b.when.getTime()).slice(0, 3)
   return (
     <main className="mx-auto max-w-7xl space-y-6 pb-12">
-      <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#11191c] px-6 py-12 sm:px-9 sm:py-16">\n        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(90deg,#10171b_5%,rgba(16,23,27,0.92)_40%,rgba(16,23,27,0.35)_100%),url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=75)] bg-cover bg-center opacity-80" />
+      <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#11191c] px-6 py-12 sm:px-9 sm:py-16">
+        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(90deg,#10171b_5%,rgba(16,23,27,0.92)_40%,rgba(16,23,27,0.35)_100%),url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=75)] bg-cover bg-center opacity-80" />
         <div className="relative z-10 max-w-2xl">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-[#e4b35f]">Admin Dashboard</p>
           <h1 className="font-serif text-4xl tracking-tight text-white sm:text-6xl">Welcome back!</h1>
