@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 const initial={"name":"","equipment":"","instructions":"","video_path":"","muscle_group":"Chest","location":"Gym","status":"draft"}
-const fields=[["name","Exercise name","text"],["equipment","Equipment","text"],["instructions","Instructions","text"],["video_path","Video storage path (optional)","text"]]
+const fields=[["name","Exercise name","text"],["equipment","Equipment","text"],["instructions","Instructions","text"]]
 const choices={"muscle_group":["Chest","Back","Shoulders","Arms","Legs","Glutes","Core"],"location":["Gym","Home","Both"],"status":["draft","published"]}
 const columns=["name","muscle_group","location","status"]
 export default function ManagementPage(){
@@ -10,8 +10,9 @@ export default function ManagementPage(){
  const [rows,setRows]=useState<any[]>([])
  const [busy,setBusy]=useState(false)
  const [message,setMessage]=useState("")
+ const [videos,setVideos]=useState<{name:string;type:string}[]>([])
  async function load(){const r=await fetch("/api/workout/exercises",{cache:"no-store"});if(r.ok)setRows((await r.json()).data||[]);else setMessage("Unable to load records")}
- useEffect(()=>{void load()},[])
+ useEffect(()=>{void load();void fetch("/api/media").then(r=>r.ok?r.json():{files:[]}).then(j=>setVideos((j.files||[]).filter((f:{type:string})=>f.type.startsWith("video/")))).catch(()=>{})},[])
  async function save(e:React.FormEvent){e.preventDefault();setBusy(true);setMessage("")
   try{const payload={...form};const r=await fetch("/api/workout/exercises",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const data=await r.json();if(!r.ok)throw new Error(data.error||"Save failed");setForm(initial);setMessage("Saved successfully");await load()}catch(e){setMessage(e instanceof Error?e.message:"Save failed")}finally{setBusy(false)}
  }
@@ -20,6 +21,7 @@ export default function ManagementPage(){
  <section className="rounded-2xl border border-white/10 bg-[#121719] p-6"><h2 className="mb-5 text-xl font-semibold">Create new</h2>
  <form onSubmit={save} className="grid gap-4 md:grid-cols-2">
  {fields.map(([name,label,type])=><label key={name} className="space-y-2 text-sm text-zinc-300"><span className="block">{label}</span><input required={["title","city","starts_at","name"].includes(name)} type={type} min={type==="number"?1:undefined} value={form[name]??""} onChange={e=>setForm({...form,[name]:e.target.value})} className="w-full rounded-lg border border-white/15 bg-[#090e11] px-3 py-3 text-white"/></label>)}
+ <label className="space-y-2 text-sm text-zinc-300"><span className="block">Demonstration video</span><select value={form.video_path} onChange={e=>setForm({...form,video_path:e.target.value})} className="w-full rounded-lg border border-white/15 bg-[#090e11] px-3 py-3 text-white"><option value="">No video yet</option>{videos.map(v=><option key={v.name} value={v.name}>{v.name}</option>)}</select><span className="block text-xs text-zinc-500">Upload a video in Media, then return here to select it.</span></label>
  {Object.entries(choices).map(([name,options])=><label key={name} className="space-y-2 text-sm text-zinc-300"><span className="block">{name.replace("_"," ")}</span><select value={form[name]} onChange={e=>setForm({...form,[name]:e.target.value})} className="w-full rounded-lg border border-white/15 bg-[#090e11] px-3 py-3 text-white">{options.map(option=><option key={option} value={option}>{option}</option>)}</select></label>)}
  <div className="flex items-center gap-4 md:col-span-2"><button disabled={busy} className="rounded-lg bg-[#d5a652] px-6 py-3 font-semibold text-black disabled:opacity-50">{busy?"Saving...":"Save"}</button><Link href="/dashboard/media" className="text-sm text-[#d5a652] underline">Upload videos in Media</Link><span role="status" className="text-sm text-zinc-300">{message}</span></div>
  </form></section>
