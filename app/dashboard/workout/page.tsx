@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-const initial={"name":"","equipment":"","instructions":"","video_path":"","muscle_group":"Chest","location":"Gym","status":"draft"}
-const fields=[["name","Exercise name","text"],["equipment","Equipment","text"],["instructions","Instructions","text"]]
+const initial={"name":"","equipment":"","instructions":"","video_path":"","muscle_group":"Chest","location":"Gym","status":"draft","sets":3,"reps":"8-12","rest_seconds":90}
+const fields=[["name","Exercise name","text"],["equipment","Equipment","text"],["instructions","Instructions","text"],["sets","Sets","number"],["reps","Repetitions","text"],["rest_seconds","Rest (seconds)","number"]]
 const choices={"muscle_group":["Chest","Back","Shoulders","Arms","Legs","Glutes","Core"],"location":["Gym","Home","Both"],"status":["draft","published"]}
 const columns=["name","muscle_group","location","status"]
 export default function ManagementPage(){
