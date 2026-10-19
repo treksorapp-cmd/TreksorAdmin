@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { getEditorialSignals } from "@/lib/editorial-signals"
 import { adminRequest } from "@/lib/supabase-admin"
-import { ArrowRight, FileText, Lightbulb, Sparkles, Globe2, ExternalLink, PenLine, CalendarCheck2 } from "lucide-react"
+import { ArrowRight, FileText, Lightbulb, Sparkles, Globe2, ExternalLink, PenLine, CalendarCheck2, Dumbbell, Brain, Leaf, Target } from "lucide-react"
 
 type Article = { id: string; title: string; publish_date: string; status: string }
 type Thought = { id: string; thought: string; publish_date: string; status: string }
@@ -60,6 +60,19 @@ export default async function DashboardPage() {
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-[#e4b35f]">Admin Dashboard</p>
           <h1 className="font-serif text-4xl tracking-tight text-white sm:text-6xl">Welcome back!</h1>
           <p className="mt-4 text-base text-zinc-300">Manage your content and inspire the Treksor community.</p>
+        </div>
+      </section>
+
+
+      <section aria-labelledby="pillars-heading" className="space-y-4">
+        <div><p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e5b45f]">Improve. Connect. Experience.</p><h2 id="pillars-heading" className="mt-2 font-serif text-3xl text-white">The four pillars</h2><p className="mt-2 text-sm text-zinc-400">Develop each dimension of Treksor independently.</p></div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            {name:"Body",href:"/dashboard/body",description:"Training and physical wellbeing",icon:Dumbbell},
+            {name:"Mind",href:"/dashboard/mind",description:"Mental strength and learning",icon:Brain},
+            {name:"Balance",href:"/dashboard/balance",description:"Mindfulness and recovery",icon:Leaf},
+            {name:"Purpose",href:"/dashboard/purpose",description:"Goals and personal direction",icon:Target},
+          ].map(pillar => <Link key={pillar.name} href={pillar.href} className="group rounded-2xl border border-[#d5a652]/20 bg-[#141b1f] p-6 transition hover:border-[#d5a652]/70"><pillar.icon className="h-7 w-7 text-[#d5a652]" /><h3 className="mt-5 font-serif text-2xl text-white">{pillar.name}</h3><p className="mt-2 min-h-10 text-sm text-zinc-400">{pillar.description}</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#e5b45f]">Manage pillar <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>)}
         </div>
       </section>
 
