@@ -22,10 +22,11 @@ export default function CreateArticlePage() {
   const [image, setImage] = useState<File | null>(null)
   const [date, setDate] = useState<string>();
   const [isLoading, setIsLoading] = useState(false)
+  const [status, setStatus] = useState<"draft" | "published">("draft")
   const router = useRouter()
   const { toast } = useToast()
 
-  const categories = ["Body", "Mental", "Spiritual"]
+  const categories = ["Body", "Mind", "Balance", "Purpose"]
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -43,20 +44,21 @@ export default function CreateArticlePage() {
       formData.append("description", description)
       formData.append("category", category)
       if (date) {
-        formData.append("date", new Date(date).toISOString().split('T')[0])
+        formData.append("date", date)
       } else {
         throw new Error("Date is required")
       }
       formData.append("body", body)
+      formData.append("status", status)
       if (image) {
         formData.append("image", image)
       }
 
-      const token = localStorage.getItem("token")
+      
       const response = await fetch("/api/articles", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
         body: formData,
       })
@@ -64,7 +66,7 @@ export default function CreateArticlePage() {
       if (response.ok) {
         toast({
           title: "Success",
-          description: "Article created successfully",
+          description: "Article saved successfully",
         })
         router.push("/dashboard/articles")
       } else {

@@ -36,7 +36,7 @@ export default function EditArticlePage() {
   const params = useParams()
   const { toast } = useToast()
 
-  const categories = ["Body", "Mental", "Spiritual"]
+  const categories = ["Body", "Mind", "Balance", "Purpose"]
 
   useEffect(() => {
     if (params._id) {
@@ -46,10 +46,10 @@ export default function EditArticlePage() {
 
   const fetchArticle = async (_id: string) => {
     try {
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${_id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
       })
 
@@ -99,11 +99,11 @@ export default function EditArticlePage() {
         formData.append("image", image)
       }
 
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${params._id}`, {
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
         body: formData,
       })

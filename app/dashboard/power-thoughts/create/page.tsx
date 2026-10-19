@@ -15,6 +15,7 @@ export default function CreatePowerThoughtPage() {
   const [thought, setThought] = useState("")
   const [date, setDate] = useState('');
   const [isLoading, setIsLoading] = useState(false)
+  const [status, setStatus] = useState<"draft" | "published">("draft")
   const router = useRouter()
   const { toast } = useToast()
 
@@ -23,14 +24,12 @@ export default function CreatePowerThoughtPage() {
     setIsLoading(true)
 
     try {
-      const token = localStorage.getItem("token")
       const response = await fetch("/api/power-thoughts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ thought, date: new Date(date).toISOString().split('T')[0] }),
+        body: JSON.stringify({ thought, date: date, status }),
       })
 
       if (response.ok) {
