@@ -16,7 +16,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <header className="relative flex h-16 shrink-0 items-center gap-3 border-b border-white/10 px-5 lg:px-9">
           <SidebarTrigger className="text-[#d5a652] hover:bg-white/10 hover:text-[#f1c778]" />
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d5a652]">Treksor Admin</span>
-          <span className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 text-xs font-medium text-zinc-300 lg:flex"><CalendarDays className="h-4 w-4 text-[#d5a652]" />{today}</span>\n          <div className="ml-auto flex min-w-0 items-center gap-3 text-sm text-zinc-300">
+          <span className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 text-xs font-medium text-zinc-300 lg:flex"><CalendarDays className="h-4 w-4 text-[#d5a652]" />{today}</span>
+          <div className="ml-auto flex min-w-0 items-center gap-3 text-sm text-zinc-300">
             
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#30261b] font-semibold text-[#e7b95f]">T</span>
             <span className="hidden truncate sm:block">{admin.user.email}</span>
