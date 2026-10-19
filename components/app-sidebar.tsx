@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Zap } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Zap, Dumbbell, Compass } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button"
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
+  { title: "Workout", url: "/dashboard/workout", icon: Dumbbell },
+  { title: "Community", url: "/dashboard/community", icon: Compass },
   { title: "Media", url: "/dashboard/media", icon: Images },
   { title: "Articles", url: "/dashboard/articles", icon: FileText },
   { title: "Power Thoughts", url: "/dashboard/power-thoughts", icon: Lightbulb },
