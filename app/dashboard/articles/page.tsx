@@ -1,5 +1,6 @@
 "use client"
 
+import { PublicationControl } from "@/components/publication-fields"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,8 @@ import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
 
 interface Article {
+  status: "draft" | "published"
+  date: string
   _id: string
   title: string
   description: string
@@ -170,6 +173,7 @@ export default function ArticlesPage() {
               >
                 View Details
               </Button>
+              <PublicationControl type="articles" id={article._id} date={article.date} status={article.status} onSaved={fetchArticles} />
             </CardContent>
           </Card>
         ))}

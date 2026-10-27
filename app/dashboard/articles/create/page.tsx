@@ -1,5 +1,7 @@
 "use client"
 
+import { PublicationFields } from "@/components/publication-fields"
+import { publicationAction, publicationDay } from "@/lib/publication"
 import type React from "react"
 
 import { useState } from "react"
@@ -20,7 +22,7 @@ export default function CreateArticlePage() {
   const [category, setCategory] = useState("")
   const [body, setBody] = useState("")
   const [image, setImage] = useState<File | null>(null)
-  const [date, setDate] = useState<string>();
+  const [date, setDate] = useState<string>(publicationDay());
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<"draft" | "published">("draft")
   const router = useRouter()
@@ -150,19 +152,7 @@ export default function CreateArticlePage() {
               <Input id="image" type="file" accept="image/*" onChange={handleImageChange} required />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="date" className="block text-sm font-medium text-muted-foreground">
-                Select Date
-              </label>
-              <input
-                type="date"
-                id="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-                required
-              />
-            </div>
+            <PublicationFields status={status} date={date} onStatus={setStatus} onDate={setDate} />
 
             <div className="space-y-2">
               <Label htmlFor="body">Body</Label>
@@ -171,7 +161,7 @@ export default function CreateArticlePage() {
 
             <div className="flex space-x-4 pt-4">
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Creating..." : "Create Article"}
+                {isLoading ? "Creating..." : publicationAction(status, date)}
               </Button>
               <Button type="button" variant="outline" onClick={() => router.back()}>
                 Cancel

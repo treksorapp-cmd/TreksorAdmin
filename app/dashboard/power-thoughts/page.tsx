@@ -1,5 +1,6 @@
 "use client"
 
+import { PublicationControl } from "@/components/publication-fields"
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -7,6 +8,7 @@ import { useToast } from "@/hooks/use-toast"
 import { ArrowUpRight, Lightbulb, Plus, Loader2, Trash2, Sparkles, CalendarDays } from "lucide-react"
 
 interface PowerThought {
+  status: "draft" | "published"
   _id: string
   thought: string
   date: string
@@ -79,7 +81,7 @@ export default function PowerThoughtsPage() {
         </div>
         <div className="inline-flex w-fit items-center gap-3 rounded-2xl border border-white/10 bg-[#141b1f] px-5 py-3 shadow-sm">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#372a1b] text-[#e0b25d]"><Lightbulb className="h-5 w-5" /></span>
-          <span><span className="block text-2xl font-bold leading-none text-white">{isLoading ? "—" : thoughts.length}</span><span className="text-xs text-zinc-400">Published</span></span>
+          <span><span className="block text-2xl font-bold leading-none text-white">{isLoading ? "—" : thoughts.length}</span><span className="text-xs text-zinc-400">Total thoughts</span></span>
         </div>
       </section>
 
@@ -107,6 +109,7 @@ export default function PowerThoughtsPage() {
                 <span className="flex items-center gap-2 text-xs text-zinc-400"><CalendarDays className="h-3.5 w-3.5" />{displayDate(thought.date)}</span>
                 <button type="button" onClick={() => void deleteThought(thought._id)} className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-600" aria-label="Delete thought" title="Delete thought"><Trash2 className="h-4 w-4" /></button>
               </div>
+            <PublicationControl type="thoughts" id={thought._id} date={thought.date} status={thought.status} onSaved={fetchThoughts} />
             </article>
           ))}
         </div>
