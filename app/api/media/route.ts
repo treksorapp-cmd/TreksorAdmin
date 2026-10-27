@@ -13,11 +13,13 @@ export async function GET() {
   const response = await fetch(`${url}/storage/v1/object/list/${BUCKET}`, { method: "POST", headers: { ...storageHeaders(admin.token), "Content-Type": "application/json" }, body: JSON.stringify({ prefix: "", limit: 100, sortBy: { column: "created_at", order: "desc" } }), cache: "no-store" })
   if (!response.ok) return NextResponse.json({ error: "Unable to load media" }, { status: 502 })
   const files = await response.json() as { name: string; id: string; created_at: string; metadata?: { mimetype?: string; size?: number } }[]
+  const labelsResponse = await admin.request("media_labels?select=*")
+  const labels = labelsResponse.ok ? await labelsResponse.json() : []
   const previews = await Promise.all(files.filter(file => file.id).map(async file => {
     const sign = await fetch(`${url}/storage/v1/object/sign/${BUCKET}/${encodeURIComponent(file.name)}`, { method:"POST", headers:{ ...storageHeaders(admin.token), "Content-Type":"application/json" }, body:JSON.stringify({ expiresIn: 900 }), cache:"no-store" })
     const result = sign.ok ? await sign.json() as { signedURL?: string } : {}
     const signed = result.signedURL
-    return { name:file.name, createdAt:file.created_at, type:file.metadata?.mimetype ?? "", size:file.metadata?.size ?? 0, url: signed ? (signed.startsWith("http") ? signed : `${url}/storage/v1${signed.startsWith("/") ? "" : "/"}${signed}`) : null }
+    return { displayName:labels.find((label:any)=>label.path===file.name)?.display_name || file.name, exerciseSlug:labels.find((label:any)=>label.path===file.name)?.exercise_slug || "", name:file.name, createdAt:file.created_at, type:file.metadata?.mimetype ?? "", size:file.metadata?.size ?? 0, url: signed ? (signed.startsWith("http") ? signed : `${url}/storage/v1${signed.startsWith("/") ? "" : "/"}${signed}`) : null }
   }))
   return NextResponse.json({ files: previews })
 }
@@ -40,6 +42,8 @@ export async function POST(request: NextRequest) {
   const { url } = config()
   const response = await fetch(`${url}/storage/v1/object/${BUCKET}/${name}`, { method:"POST", headers: { ...storageHeaders(admin.token), "Content-Type":file.type, "x-upsert":"false" }, body: bytes })
   if (!response.ok) return NextResponse.json({ error: "Upload failed. Check storage permissions or file size." }, { status: 502 })
+  const label = await admin.request("media_labels", {method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"},body:JSON.stringify({path:name,display_name:file.name.slice(0,200)})})
+  if(!label.ok) return NextResponse.json({name, warning:"Uploaded; rename this file in Media."},{status:201})
   return NextResponse.json({ name }, { status: 201 })
 }
 export async function DELETE(request: NextRequest) {
@@ -51,4 +55,12 @@ export async function DELETE(request: NextRequest) {
   const response = await fetch(`${url}/storage/v1/object/${BUCKET}/${name}`, { method:"DELETE", headers: storageHeaders(admin.token) })
   if (!response.ok) return NextResponse.json({ error: "Delete failed" }, { status: 502 })
   return NextResponse.json({ ok: true })
+}
+
+export async function PATCH(request: NextRequest) {
+ const admin=await adminRequest("");if(!admin)return NextResponse.json({error:"Unauthorized"},{status:401})
+ const body=await request.json().catch(()=>null)
+ if(!body||typeof body.name!=="string"||!/^[0-9a-f-]{36}\.(jpg|png|webp|mp4|mov|webm)$/.test(body.name)||typeof body.displayName!=="string"||!body.displayName.trim()||body.displayName.length>200||typeof body.exerciseSlug!=="string"||! /^[a-z0-9-]{0,120}$/.test(body.exerciseSlug))return NextResponse.json({error:"Invalid name or exercise"},{status:400})
+ const result=await admin.request("media_labels?on_conflict=path",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"},body:JSON.stringify({path:body.name,display_name:body.displayName.trim(),exercise_slug:body.exerciseSlug||null})})
+ return result.ok?NextResponse.json({ok:true}):NextResponse.json({error:"Unable to save. An exercise can have only one linked video."},{status:400})
 }
