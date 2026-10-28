@@ -12,5 +12,14 @@ export async function GET(req:NextRequest) {
  endpoint.searchParams.set("limit","100")
  endpoint.searchParams.set("order",type==="events"?"starts_at.asc":"name.asc")
  const r=await fetch(endpoint,{headers:{apikey:key,Authorization:`Bearer ${key}`},cache:"no-store"})
- return r.ok?NextResponse.json({data:await r.json()},{headers:{"Cache-Control":"public,max-age=60"}}):NextResponse.json({error:"Unavailable"},{status:502})
+ if(!r.ok)return NextResponse.json({error:"Unavailable"},{status:502})
+ const data=await r.json()
+ if(type==="exercises"){
+  const paths=Array.from(new Set(data.map((item:any)=>item.video_path).filter((path:unknown)=>typeof path==="string"&&/^[a-f0-9-]{36}\.(mp4|mov|webm)$/.test(path as string))))
+  if(paths.length){
+   const signed=await fetch(`${url}/storage/v1/object/sign/treksor-media`,{method:"POST",headers:{apikey:key,Authorization:`Bearer ${key}`,"Content-Type":"application/json"},body:JSON.stringify({paths,expiresIn:900}),cache:"no-store"})
+   if(signed.ok){const links=await signed.json();for(const item of data){const path=links.find((link:any)=>link.path===item.video_path)?.signedURL;if(typeof path==="string")item.videoUrl=path.startsWith("http")?path:`${url}/storage/v1${path}`}}
+  }
+ }
+ return NextResponse.json({data},{headers:{"Cache-Control":"public,max-age=60"}})
 }
