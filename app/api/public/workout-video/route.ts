@@ -8,13 +8,14 @@ export async function GET(request: NextRequest) {
   }
   const { url, key } = config()
   const headers = { apikey: key, Authorization: "Bearer " + key }
-  const labels=await fetch(url+"/rest/v1/media_labels?select=path&exercise_slug=eq."+encodeURIComponent(id),{headers,cache:"no-store"})
-  const assignments=labels.ok?await labels.json():[]
-  let filename=assignments[0]?.path
-  if(!filename && /^[a-f0-9-]{36}$/.test(id)){
-   const response=await fetch(url+"/rest/v1/workout_exercises?select=video_path&id=eq."+id+"&status=eq.published",{headers,cache:"no-store"})
-   if(response.ok)filename=(await response.json())[0]?.video_path
-  }
+  // UUIDs from the catalogue need one lookup, not a labels lookup followed by a second query.
+  const isId=/^[a-f0-9-]{36}$/.test(id)
+  const lookup=isId
+    ? `/rest/v1/workout_exercises?select=video_path&id=eq.${id}&status=eq.published`
+    : `/rest/v1/media_labels?select=path&exercise_slug=eq.${encodeURIComponent(id)}`
+  const response=await fetch(url+lookup,{headers,next:{revalidate:60}})
+  const rows=response.ok?await response.json():[]
+  const filename=isId?rows[0]?.video_path:rows[0]?.path
   if (typeof filename !== "string" || !/^[a-f0-9-]{36}\.(mp4|mov|webm)$/.test(filename)) {
     return NextResponse.json({ error: "Video unavailable" }, { status: 404 })
   }
@@ -28,5 +29,5 @@ export async function GET(request: NextRequest) {
   const path = (await signed.json()).signedURL
   if (typeof path !== "string") return NextResponse.json({ error: "Video unavailable" }, { status: 502 })
   const playback = path.startsWith("http") ? path : url + "/storage/v1" + (path.startsWith("/") ? "" : "/") + path
-  return NextResponse.json({ url: playback }, { headers: { "Cache-Control": "no-store" } })
+  return NextResponse.json({ url: playback }, { headers: { "Cache-Control": "public, max-age=300, stale-while-revalidate=60" } })
 }
