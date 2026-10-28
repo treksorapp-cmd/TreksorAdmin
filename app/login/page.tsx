@@ -33,14 +33,12 @@ export default function LoginPage() {
       })
 
       if (response.ok) {
-        const data = await response.json()
-        console.log(data)
-        localStorage.setItem("token", data.data.token)
         toast({
           title: "Success",
           description: "Logged in successfully",
         })
         router.push("/dashboard")
+        router.refresh()
       } else {
         toast({
           title: "Error",

@@ -1,5 +1,7 @@
 "use client"
 
+import { PublicationFields } from "@/components/publication-fields"
+import { publicationDay } from "@/lib/publication"
 import type React from "react"
 
 import { useState, useEffect } from "react"
@@ -24,6 +26,8 @@ interface Article {
 }
 
 export default function EditArticlePage() {
+  const [date, setDate] = useState(publicationDay())
+  const [status, setStatus] = useState<"draft" | "published">("draft")
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState("")
@@ -36,7 +40,7 @@ export default function EditArticlePage() {
   const params = useParams()
   const { toast } = useToast()
 
-  const categories = ["Body", "Mental", "Spiritual"]
+  const categories = ["Body", "Mind", "Balance", "Purpose"]
 
   useEffect(() => {
     if (params._id) {
@@ -46,16 +50,18 @@ export default function EditArticlePage() {
 
   const fetchArticle = async (_id: string) => {
     try {
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${_id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
       })
 
       if (response.ok) {
         const data = await response.json()
         const article = data.article
+        setDate(article.date)
+        setStatus(article.status)
         setTitle(article.title)
         setDescription(article.description)
         setCategory(article.category)
@@ -94,16 +100,18 @@ export default function EditArticlePage() {
       formData.append("title", title)
       formData.append("description", description)
       formData.append("category", category)
+      formData.append("date", date)
+      formData.append("status", status)
       formData.append("body", body)
       if (image) {
         formData.append("image", image)
       }
 
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${params._id}`, {
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
         body: formData,
       })
@@ -203,6 +211,7 @@ export default function EditArticlePage() {
             </div>
 
             <div className="space-y-2">
+              <PublicationFields status={status} date={date} onStatus={setStatus} onDate={setDate} />
               <Label htmlFor="body">Body</Label>
               <RichTextEditor content={body} onChange={setBody} placeholder="Write your article content here..." />
             </div>
