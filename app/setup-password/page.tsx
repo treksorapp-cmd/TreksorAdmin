@@ -48,10 +48,10 @@ export default function SetupPasswordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+    <main className="min-h-screen bg-background flex items-center justify-center p-6">
       <section className="w-full max-w-md rounded-lg border bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-semibold">Treksor Admin</h1>
-        <p className="mt-2 text-gray-600">Set your administrator password</p>
+        <p className="mt-2 text-muted-foreground">Set your administrator password</p>
         {done ? (
           <div className="mt-6">
             <p>Password saved. You can now sign in.</p>
@@ -76,7 +76,7 @@ export default function SetupPasswordPage() {
                 className="mt-1 w-full rounded border p-2" />
             </label>
             {message && <p role="alert" className="text-red-700">{message}</p>}
-            <button type="submit" disabled={busy} className="rounded bg-black px-4 py-2 text-white disabled:opacity-50">
+            <button type="submit" disabled={busy} className="rounded bg-black px-4 py-2 text-foreground disabled:opacity-50">
               {busy ? "Saving…" : "Set password"}
             </button>
           </form>

@@ -58,10 +58,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center admin-login">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Treksor Dashboard</CardTitle>
+          <div className="treksor-lockup justify-center mb-6"><img src="/treksor-mark.png" alt="Treksor" width="52" height="52"/><span><strong>TREKSOR</strong><small>Admin studio</small></span></div>
+          <CardTitle className="text-2xl font-semibold">Treksor Dashboard</CardTitle>
           <CardDescription>Sign in to your admin account</CardDescription>
         </CardHeader>
         <CardContent>
@@ -71,7 +72,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@gmail.com"
+                placeholder="Your admin email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -93,6 +94,7 @@ export default function LoginPage() {
                   variant="ghost"
                   size="sm"
                   className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

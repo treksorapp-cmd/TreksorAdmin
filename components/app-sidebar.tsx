@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Zap, Dumbbell, Compass, Brain, Leaf, Target } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Dumbbell, Compass, Brain, Leaf, Target } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -39,12 +39,10 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar className="border-r border-white/10 bg-[#080808] text-zinc-100">
+    <Sidebar className="border-r border-white/10 bg-[#02050C] text-foreground">
       <SidebarHeader className="items-center px-4 pb-10 pt-9">
         <Link href="/dashboard" className="flex flex-col items-center gap-2" aria-label="Treksor Dashboard">
-          <span className="flex h-20 w-20 items-center justify-center rounded-full border border-[#b88a47]/50 bg-black"><Zap className="h-11 w-11 fill-[#e3b45f] text-[#e3b45f]" aria-hidden="true" /></span>
-          <span className="font-serif text-2xl tracking-[0.08em] text-[#e3b45f]">TREKSOR</span>
-          <span className="text-[9px] uppercase tracking-[0.25em] text-zinc-500">Admin studio</span>
+          <span className="treksor-lockup"><img src="/treksor-mark.png" alt="" width="52" height="52"/><span><strong>TREKSOR</strong><small>Admin studio</small></span></span>
         </Link>
       </SidebarHeader>
       <SidebarContent className="px-2">
@@ -55,7 +53,7 @@ export function AppSidebar() {
                 const active = item.url === "/dashboard" ? pathname === item.url : pathname.startsWith(item.url)
                 return (
                   <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton asChild isActive={active} className={active ? "h-12 rounded-xl bg-[#382b1b] font-medium text-[#f0bf68] hover:bg-[#47351d] hover:text-[#f0bf68]" : "h-12 rounded-xl text-zinc-300 hover:bg-white/10 hover:text-white"}>
+                    <SidebarMenuButton asChild isActive={active} className={active ? "h-12 rounded-xl bg-[#19222C] font-medium text-[#D7B877] hover:bg-[#19222C] hover:text-[#D7B877]" : "h-12 rounded-xl text-secondary-foreground hover:bg-white/10 hover:text-foreground"}>
                       <Link href={item.url}><item.icon className="h-5 w-5" /><span>{item.title}</span></Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -67,14 +65,14 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="gap-2 border-t border-white/10 p-3">
         <SidebarMenu><SidebarMenuItem>
-          <SidebarMenuButton asChild isActive={pathname.startsWith("/dashboard/change-password")} className="h-11 rounded-xl text-zinc-300 hover:bg-white/10 hover:text-white">
+          <SidebarMenuButton asChild isActive={pathname.startsWith("/dashboard/change-password")} className="h-11 rounded-xl text-secondary-foreground hover:bg-white/10 hover:text-foreground">
             <Link href="/dashboard/change-password"><KeyRound className="h-4 w-4" /><span>Change Password</span></Link>
           </SidebarMenuButton>
         </SidebarMenuItem></SidebarMenu>
-        <Button variant="ghost" className="h-11 w-full justify-start rounded-xl text-zinc-300 hover:bg-white/10 hover:text-white" onClick={() => void handleLogout()}>
+        <Button variant="ghost" className="h-11 w-full justify-start rounded-xl text-secondary-foreground hover:bg-white/10 hover:text-foreground" onClick={() => void handleLogout()}>
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </Button>
-        <p className="px-3 pb-2 pt-5 text-[10px] uppercase leading-6 tracking-[0.2em] text-zinc-600">Treksor<br />Inspire. Explore. Grow.</p>
+        <p className="px-3 pb-2 pt-5 text-[10px] uppercase leading-6 tracking-[0.2em] text-muted-foreground">Treksor<br />Inspire. Explore. Grow.</p>
       </SidebarFooter>
     </Sidebar>
   )
