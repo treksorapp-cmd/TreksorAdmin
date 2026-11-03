@@ -49,8 +49,11 @@ export function RichTextEditor({ content, onChange, placeholder = "Start writing
   const [htmlContent, setHtmlContent] = useState("")
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
+        link: false,
+        underline: false,
         bulletList: {
           HTMLAttributes: {
             class: "tiptap-bullet-list",

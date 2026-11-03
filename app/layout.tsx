@@ -1,15 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
 
-const inter = Inter({ subsets: ["latin"] })
+
 
 export const metadata: Metadata = {
   title: "Treksor Dashboard",
   description: "Admin panel for Treksor",
-    generator: 'v0.dev'
+  icons: { icon: "/treksor-mark.png", apple: "/treksor-mark.png" },
 }
 
 export default function RootLayout({
@@ -18,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="dark">
+      <body>
         {children}
         <Toaster />
       </body>

@@ -1,5 +1,6 @@
 "use client"
 
+import { PublicationControl } from "@/components/publication-fields"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -8,9 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Edit, Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
-import { usePublicUrl } from "@/hooks/use-publicUrl"
 
 interface Article {
+  status: "draft" | "published"
+  date: string
   _id: string
   title: string
   description: string
@@ -26,9 +28,8 @@ export default function ArticlesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const { toast } = useToast()
-  const publicUrl = usePublicUrl();
 
-  const categories = ["All", "Body", "Mental", "Spiritual"]
+  const categories = ["All", "Body", "Mind", "Balance", "Purpose"]
 
   useEffect(() => {
     fetchArticles()
@@ -44,10 +45,10 @@ export default function ArticlesPage() {
 
   const fetchArticles = async () => {
     try {
-      const token = localStorage.getItem("token")
+      
       const response = await fetch("/api/articles", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
       })
 
@@ -76,11 +77,11 @@ export default function ArticlesPage() {
     if (!confirm("Are you sure you want to delete this article?")) return
 
     try {
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${_id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
       })
 
@@ -143,7 +144,7 @@ export default function ArticlesPage() {
           <Card key={article._id} className="overflow-hidden">
             <div className="aspect-video relative">
               <Image
-                src={`${publicUrl}/${article.image}` || "/placeholder.svg?height=200&width=300"}
+                src={article.image || "/placeholder.svg?height=200&width=300"}
                 alt={article.title}
                 fill
                 className="object-cover"
@@ -172,6 +173,7 @@ export default function ArticlesPage() {
               >
                 View Details
               </Button>
+              <PublicationControl type="articles" id={article._id} date={article.date} status={article.status} onSaved={fetchArticles} />
             </CardContent>
           </Card>
         ))}

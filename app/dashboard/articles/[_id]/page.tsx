@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { ArrowLeft, Edit, Trash2 } from "lucide-react"
 import Image from "next/image"
-import { usePublicUrl } from "@/hooks/use-publicUrl"
+import DOMPurify from "isomorphic-dompurify"
 
 interface Article {
   _id: string
@@ -25,7 +25,6 @@ export default function ArticleDetailPage() {
   const router = useRouter()
   const params = useParams()
   const { toast } = useToast()
-  const publicUrl = usePublicUrl();
 
   useEffect(() => {
     if (params._id) {
@@ -35,10 +34,10 @@ export default function ArticleDetailPage() {
 
   const fetchArticle = async (_id: string) => {
     try {
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${_id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
       })
 
@@ -67,11 +66,11 @@ export default function ArticleDetailPage() {
     if (!confirm("Are you sure you want to delete this article?")) return
 
     try {
-      const token = localStorage.getItem("token")
+      
       const response = await fetch(`/api/articles/${params._id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
         },
       })
 
@@ -140,7 +139,7 @@ export default function ArticleDetailPage() {
         <CardContent className="space-y-6">
           <div className="aspect-video relative rounded-lg overflow-hidden">
             <Image
-              src={`${publicUrl}/${article.image}` || "/placeholder.svg?height=200&width=300"}
+              src={article.image || "/placeholder.svg?height=200&width=300"}
               alt={article.title}
               fill
               className="object-cover"
@@ -154,7 +153,7 @@ export default function ArticleDetailPage() {
 
           <div>
             <h3 className="text-lg font-semibold mb-2">Content</h3>
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: article.body }} />
+            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.body) }} />
           </div>
 
           <div className="text-sm text-muted-foreground">

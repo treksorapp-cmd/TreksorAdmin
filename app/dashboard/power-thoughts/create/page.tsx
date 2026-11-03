@@ -1,5 +1,7 @@
 "use client"
 
+import { PublicationFields } from "@/components/publication-fields"
+import { publicationAction, publicationDay } from "@/lib/publication"
 import type React from "react"
 
 import { useState } from "react"
@@ -13,8 +15,9 @@ import { ArrowLeft, AlertTriangle, Lightbulb } from "lucide-react"
 
 export default function CreatePowerThoughtPage() {
   const [thought, setThought] = useState("")
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(publicationDay());
   const [isLoading, setIsLoading] = useState(false)
+  const [status, setStatus] = useState<"draft" | "published">("draft")
   const router = useRouter()
   const { toast } = useToast()
 
@@ -23,14 +26,12 @@ export default function CreatePowerThoughtPage() {
     setIsLoading(true)
 
     try {
-      const token = localStorage.getItem("token")
       const response = await fetch("/api/power-thoughts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ thought, date: new Date(date).toISOString().split('T')[0] }),
+        body: JSON.stringify({ thought, date: date, status }),
       })
 
       if (response.ok) {
@@ -74,8 +75,7 @@ export default function CreatePowerThoughtPage() {
         <AlertTriangle className="h-4 w-4" />
         <AlertTitle>Important Notice</AlertTitle>
         <AlertDescription>
-          Users will be notified when you create a new power thought. Please ensure your content is appropriate and
-          inspirational before saving.
+          Choose Publish / schedule to make this thought available in the app. Drafts remain private.
         </AlertDescription>
       </Alert>
 
@@ -101,19 +101,7 @@ export default function CreatePowerThoughtPage() {
                   {thought.length} characters ({250 - thought.length} remaining)
                 </p>
               </div>
-              <div className="space-y-2">
-                <label htmlFor="date" className="block text-sm font-medium text-muted-foreground">
-                  Select Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-                  required
-                />
-              </div>
+              <PublicationFields status={status} date={date} onStatus={setStatus} onDate={setDate} />
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
@@ -128,7 +116,7 @@ export default function CreatePowerThoughtPage() {
               ) : (
                 <>
                   <Lightbulb className="mr-2 h-4 w-4" />
-                  Save Power Thought
+                  {publicationAction(status, date)}
                 </>
               )}
             </Button>
