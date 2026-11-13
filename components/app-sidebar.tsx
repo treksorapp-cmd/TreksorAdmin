@@ -47,12 +47,12 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="px-2 py-4">
-          <h2 className="text-lg font-semibold">Treksor Dashboard</h2>
+          <h2 className="text-lg font-semibold">TREKSOR <span className="text-primary">/ STUDIO</span></h2>
         </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>CONTENT & OPERATIONS</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
