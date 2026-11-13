@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Dumbbell, Compass, Brain, Leaf, Target } from "lucide-react"
+import { Home, FileText, LogOut, Lightbulb, KeyRound, Users, Plug, Images, Dumbbell, Compass, Brain, Leaf } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -14,8 +14,8 @@ const items = [
   { title: "Body", url: "/dashboard/body", icon: Dumbbell },
   { title: "Mind", url: "/dashboard/mind", icon: Brain },
   { title: "Balance", url: "/dashboard/balance", icon: Leaf },
-  { title: "Purpose", url: "/dashboard/purpose", icon: Target },
-  { title: "Community", url: "/dashboard/community", icon: Compass },
+  { title: "Purpose", url: "/dashboard/purpose", icon: Compass },
+  { title: "Community", url: "/dashboard/community", icon: Users },
   { title: "Media", url: "/dashboard/media", icon: Images },
   { title: "Articles", url: "/dashboard/articles", icon: FileText },
   { title: "Power Thoughts", url: "/dashboard/power-thoughts", icon: Lightbulb },
