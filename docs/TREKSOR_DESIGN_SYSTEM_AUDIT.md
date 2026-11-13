@@ -43,3 +43,10 @@
 - Review contrast, typography, navigation, loading/empty/error states and screen reader labels.
 - Confirm public site source and bring it onto the same token, icon and navigation standard.
 - Merge and deploy only after QA; commits on branches do not affect production.
+
+## Integration verification — 2026-11-13
+- Production Supabase public.articles category counts verified by read-only query: Body 8, Mind 8, Balance 4, Purpose 6 (26 total). No data migration required for these rows.
+- Admin API routes still proxy to `https://app.treksor.com/api/v1/article` outside development; this is **not** the verified Supabase articles table. API category validation, identity mapping and upload endpoint remain unverified. Do not merge/release category form changes until the backend is inspected and authenticated create/edit tests pass.
+- Admin detail and edit now display normalized legacy labels; list filtering also handles legacy values. No destructive content changes performed.
+- Mobile open PRs #1-#11 include dependent design and feature branches; cherry-picking or merging without conflict and regression review is unsafe. PR #11 targets design/premium-showcase-2026, not active develop.
+- No build, Expo simulator, Railway deployment or public website update was performed in this session.
