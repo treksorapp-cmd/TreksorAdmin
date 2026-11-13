@@ -78,15 +78,15 @@
 }
 
 .ProseMirror blockquote {
-  border-left: 4px solid #e5e7eb;
+  border-left: 3px solid #D7B877;
   margin: 1.5rem 0;
   padding-left: 1rem;
 }
 
 .ProseMirror code {
-  background-color: #f3f4f6;
+  background-color: #19222C;
   border-radius: 0.25rem;
-  color: #1f2937;
+  color: #F5F4F1;
   font-size: 0.875em;
   padding: 0.125rem 0.25rem;
 }
@@ -100,7 +100,7 @@
 
 .ProseMirror hr {
   border: none;
-  border-top: 2px solid #e5e7eb;
+  border-top: 1px solid #39404A;
   margin: 2rem 0;
 }
 
@@ -158,12 +158,12 @@
 }
 
 .ProseMirror a {
-  color: #2563eb;
+  color: #D7B877;
   text-decoration: underline;
 }
 
 .ProseMirror a:hover {
-  color: #1d4ed8;
+  color: #F5F4F1;
 }
 
 /* Ensure bullet points are visible in article display */
