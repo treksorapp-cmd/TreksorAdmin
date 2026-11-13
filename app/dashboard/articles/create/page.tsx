@@ -25,7 +25,7 @@ export default function CreateArticlePage() {
   const router = useRouter()
   const { toast } = useToast()
 
-  const categories = ["Body", "Mental", "Spiritual"]
+  const categories = ["Body", "Mind", "Balance", "Purpose"]
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
