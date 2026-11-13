@@ -36,7 +36,7 @@ export default function EditArticlePage() {
   const params = useParams()
   const { toast } = useToast()
 
-  const categories = ["Body", "Mental", "Spiritual"]
+  const categories = ["Body", "Mind", "Balance", "Purpose"]
 
   useEffect(() => {
     if (params._id) {
