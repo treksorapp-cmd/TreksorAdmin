@@ -9,8 +9,8 @@ export const treksorIdentity = {
   // Never use "Ecosystem" as a user-facing product section.
   pillars: {
     body: { label: "Body", icon: "dumbbell", mobileIcon: "barbell-outline", description: "Strength & movement" },
-    mind: { label: "Mind", icon: "lightbulb", mobileIcon: "bulb-outline", description: "Clarity & focus" },
-    balance: { label: "Balance", icon: "refresh-cw", mobileIcon: "sync-outline", description: "Recovery & presence" },
+    mind: { label: "Mind", icon: "brain", mobileIcon: "brain", description: "Clarity & focus" },
+    balance: { label: "Balance", icon: "leaf", mobileIcon: "leaf-outline", description: "Recovery & presence" },
     purpose: { label: "Purpose", icon: "compass", mobileIcon: "compass-outline", description: "Direction & intention" },
   },
   tools: ["Today", "Mentor", "Progress", "Community"],
