@@ -28,7 +28,7 @@ export default function ArticlesPage() {
   const { toast } = useToast()
   const publicUrl = usePublicUrl();
 
-  const categories = ["All", "Body", "Mental", "Spiritual"]
+  const categories = ["All", "Body", "Mind", "Balance", "Purpose"]
 
   useEffect(() => {
     fetchArticles()
@@ -143,7 +143,7 @@ export default function ArticlesPage() {
           <Card key={article._id} className="overflow-hidden">
             <div className="aspect-video relative">
               <Image
-                src={`${publicUrl}/${article.image}` || "/placeholder.svg?height=200&width=300"}
+                src={article.image ? `${publicUrl}/${article.image}` : "/placeholder.svg?height=200&width=300"}
                 alt={article.title}
                 fill
                 className="object-cover"
