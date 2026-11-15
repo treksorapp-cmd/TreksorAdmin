@@ -134,13 +134,13 @@ export default function ArticleDetailPage() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>{article.title}</CardTitle>
-            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{article.category}</span>
+            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{({ Mental: "Mind", Spiritual: "Balance" } as Record<string, string>)[article.category] ?? article.category}</span>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="aspect-video relative rounded-lg overflow-hidden">
             <Image
-              src={`${publicUrl}/${article.image}` || "/placeholder.svg?height=200&width=300"}
+              src={article.image ? `${publicUrl}/${article.image}` : "/placeholder.svg?height=200&width=300"}
               alt={article.title}
               fill
               className="object-cover"

@@ -28,7 +28,8 @@ export default function ArticlesPage() {
   const { toast } = useToast()
   const publicUrl = usePublicUrl();
 
-  const categories = ["All", "Body", "Mental", "Spiritual"]
+  const categories = ["All", "Body", "Mind", "Balance", "Purpose"]
+  const canonicalCategory = (category: string) => ({ Mental: "Mind", Spiritual: "Balance" }[category] ?? category)
 
   useEffect(() => {
     fetchArticles()
@@ -38,7 +39,7 @@ export default function ArticlesPage() {
     if (selectedCategory === "All") {
       setFilteredArticles(articles)
     } else {
-      setFilteredArticles(articles.filter((article) => article.category === selectedCategory))
+      setFilteredArticles(articles.filter((article) => canonicalCategory(article.category) === selectedCategory))
     }
   }, [articles, selectedCategory])
 
@@ -143,7 +144,7 @@ export default function ArticlesPage() {
           <Card key={article._id} className="overflow-hidden">
             <div className="aspect-video relative">
               <Image
-                src={`${publicUrl}/${article.image}` || "/placeholder.svg?height=200&width=300"}
+                src={article.image ? `${publicUrl}/${article.image}` : "/placeholder.svg?height=200&width=300"}
                 alt={article.title}
                 fill
                 className="object-cover"
@@ -151,7 +152,7 @@ export default function ArticlesPage() {
             </div>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{article.category}</span>
+                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{canonicalCategory(article.category)}</span>
                 <div className="flex space-x-1">
                   <Button variant="ghost" size="sm" onClick={() => router.push(`/dashboard/articles/${article._id}`)}>
                     <Edit className="h-4 w-4" />
