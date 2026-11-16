@@ -2,7 +2,7 @@ import HomeImageApprovals from "@/components/home-image-approvals";
 import Link from "next/link"
 import { getEditorialSignals } from "@/lib/editorial-signals"
 import { adminRequest } from "@/lib/supabase-admin"
-import { ArrowRight, FileText, Lightbulb, Sparkles, Globe2, ExternalLink, PenLine, CalendarCheck2, Dumbbell, Brain, Leaf, Target } from "lucide-react"
+import { ArrowRight, FileText, Lightbulb, Sparkles, Globe2, ExternalLink, PenLine, CalendarCheck2, Dumbbell, Brain, Leaf, Compass } from "lucide-react"
 
 type Article = { id: string; title: string; publish_date: string; status: string }
 type Thought = { id: string; thought: string; publish_date: string; status: string }
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
             {name:"Body",href:"/dashboard/body",description:"Training and physical wellbeing",icon:Dumbbell},
             {name:"Mind",href:"/dashboard/mind",description:"Mental strength and learning",icon:Brain},
             {name:"Balance",href:"/dashboard/balance",description:"Mindfulness and recovery",icon:Leaf},
-            {name:"Purpose",href:"/dashboard/purpose",description:"Goals and personal direction",icon:Target},
+            {name:"Purpose",href:"/dashboard/purpose",description:"Goals and personal direction",icon:Compass},
           ].map(pillar => <Link key={pillar.name} href={pillar.href} className="group rounded-2xl border border-[#D7B877]/20 bg-[#111820] p-6 transition hover:border-[#D7B877]/70"><pillar.icon className="h-7 w-7 text-[#D7B877]" /><h3 className="mt-5 font-sans text-2xl text-foreground">{pillar.name}</h3><p className="mt-2 min-h-10 text-sm text-muted-foreground">{pillar.description}</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#D7B877]">Manage pillar <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>)}
         </div>
       </section>
